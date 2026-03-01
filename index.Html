@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EPIC GAMES</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Затемнення фону -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="header-left">
+            <div class="logo">
+                <i class="fab fa-unity"></i>
+                <span>EPIC GAMES</span>
+            </div>
+            <nav class="main-nav">
+                <a href="#" class="nav-link active" data-page="store">МАГАЗИН</a>
+                <a href="#" class="nav-link" data-page="randomizer">РАНДОМАЙЗЕР</a>
+                <a href="#" class="nav-link" data-page="cat">ГЕНЕРАТОР КОТА</a>
+                <a href="#" class="nav-link" data-page="news">НОВИНИ</a>
+                <a href="#" class="nav-link" data-page="support">ПІДТРИМКА</a>
+            </nav>
+        </div>
+        <div class="header-right">
+            <!-- Пошук -->
+            <div class="search-box">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Пошук ігор..." class="search-input">
+                <div class="search-results" id="searchResults"></div>
+            </div>
+            
+            <!-- Баланс -->
+            <div class="balance" id="balanceDisplay">
+                <i class="fas fa-wallet"></i>
+                <span id="balanceAmount">0</span> грн
+            </div>
+            
+            <!-- Кошик -->
+            <div class="cart" id="cartBtn">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+            
+            <!-- Меню користувача -->
+            <div class="user-menu" id="userMenu">
+                <button class="login-btn" id="loginBtn">Увійти</button>
+                <button class="register-btn" id="registerBtn">Реєстрація</button>
+            </div>
+            
+            <!-- Профіль користувача -->
+            <div class="user-profile" id="userProfile" style="display: none;">
+                <div class="profile-btn" id="profileBtn">
+                    <div class="profile-avatar" id="profileAvatar">U</div>
+                    <span id="profileName">Користувач</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <a href="#" data-page="profile"><i class="fas fa-user"></i> Профіль</a>
+                    <a href="#" data-page="library"><i class="fas fa-book"></i> Бібліотека</a>
+                    <a href="#" id="addBalanceBtn"><i class="fas fa-plus-circle"></i> Поповнити баланс</a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Вийти</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- МОДАЛЬНІ ВІКНА -->
+    
+    <!-- Реєстрація -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Реєстрація</h2>
+                <button class="close-modal" id="closeRegister">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>Ім'я користувача</label>
+                        <input type="text" id="regName" placeholder="Ім'я користувача" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="regEmail" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" id="regPassword" placeholder="Пароль" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Підтвердження</label>
+                        <input type="password" id="regConfirm" placeholder="Підтвердження" required>
+                    </div>
+                    <button type="submit" class="modal-btn">Зареєструватися</button>
+                </form>
+                <div class="modal-footer">
+                    <p>Вже є акаунт? <a href="#" id="switchToLogin">Увійти</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Вхід -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Вхід</h2>
+                <button class="close-modal" id="closeLogin">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="loginEmail" placeholder="Email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Пароль</label>
+                        <input type="password" id="loginPassword" placeholder="Пароль" required>
+                    </div>
+                    <button type="submit" class="modal-btn">Увійти</button>
+                </form>
+                <div class="modal-footer">
+                    <p>Немає акаунта? <a href="#" id="switchToRegister">Реєстрація</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Поповнення балансу -->
+    <div class="modal" id="balanceModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Поповнення балансу</h2>
+                <button class="close-modal" id="closeBalance">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="balance-options">
+                    <button class="balance-option" data-amount="100">100 грн</button>
+                    <button class="balance-option" data-amount="500">500 грн</button>
+                    <button class="balance-option" data-amount="1000">1000 грн</button>
+                    <button class="balance-option" data-amount="5000">5000 грн</button>
+                </div>
+                <div class="custom-balance">
+                    <label>Інша сума:</label>
+                    <input type="number" id="customAmount" placeholder="Введіть суму" min="1">
+                </div>
+                <button class="modal-btn" id="confirmAddBalance">Поповнити</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Кошик -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content cart-modal">
+            <div class="modal-header">
+                <h2>Кошик <span id="cartItemCount">(0)</span></h2>
+                <button class="close-modal" id="closeCart">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="cart-items" id="cartItems">
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <p>Кошик порожній</p>
+                    </div>
+                </div>
+                <div class="cart-summary" id="cartSummary" style="display: none;">
+                    <div class="cart-total">
+                        <span>Разом:</span>
+                        <span class="total-price" id="cartTotal">0 грн</span>
+                    </div>
+                    <div class="cart-balance-info" id="cartBalanceInfo"></div>
+                    <button class="checkout-btn" id="checkoutBtn">Оформити замовлення</button>
+                    <button class="clear-cart-btn" id="clearCartBtn">Очистити кошик</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Деталі гри -->
+    <div class="modal" id="gameModal">
+        <div class="modal-content game-modal">
+            <div class="modal-header">
+                <h2 id="gameTitle">Назва гри</h2>
+                <button class="close-modal" id="closeGame">&times;</button>
+            </div>
+            <div class="modal-body" id="gameDetails"></div>
+        </div>
+    </div>
+
+    <!-- Підтвердження -->
+    <div class="modal" id="confirmModal">
+        <div class="modal-content confirm-modal">
+            <div class="modal-body confirm-body">
+                <i class="fas fa-check-circle"></i>
+                <h3>Додано в кошик!</h3>
+                <p id="confirmMessage"></p>
+            </div>
+            <div class="confirm-actions">
+                <button class="confirm-btn" id="continueBtn">Продовжити</button>
+                <button class="confirm-btn view-cart" id="viewCartBtn">До кошика</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Повідомлення про покупку -->
+    <div class="modal" id="purchaseModal">
+        <div class="modal-content confirm-modal">
+            <div class="modal-body confirm-body">
+                <i class="fas fa-check-circle" style="color: #00c851;"></i>
+                <h3>Покупка успішна!</h3>
+                <p id="purchaseMessage"></p>
+            </div>
+            <div class="confirm-actions">
+                <button class="confirm-btn view-cart" id="closePurchaseBtn">Гаразд</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Повідомлення про недостатньо коштів -->
+    <div class="modal" id="insufficientModal">
+        <div class="modal-content confirm-modal">
+            <div class="modal-body confirm-body">
+                <i class="fas fa-exclamation-circle" style="color: #ff4444;"></i>
+                <h3>Недостатньо коштів!</h3>
+                <p id="insufficientMessage"></p>
+            </div>
+            <div class="confirm-actions">
+                <button class="confirm-btn" id="closeInsufficientBtn">Закрити</button>
+                <button class="confirm-btn view-cart" id="addBalanceFromInsufficient">Поповнити баланс</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ОСНОВНИЙ КОНТЕНТ -->
+    <main id="mainContent"></main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>Epic Games</h4>
+                <ul>
+                    <li><a href="#">Про нас</a></li>
+                    <li><a href="#">Кар'єра</a></li>
+                    <li><a href="#">Контакти</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Магазин</h4>
+                <ul>
+                    <li><a href="#">Подарунки</a></li>
+                    <li><a href="#">Знижки</a></li>
+                    <li><a href="#">Безкоштовні</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Підтримка</h4>
+                <ul>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Правила</a></li>
+                    <li><a href="#">Безпека</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2024 Epic Games Store</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
